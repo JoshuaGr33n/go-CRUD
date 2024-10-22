@@ -1,0 +1,72 @@
+{{template "header"}}
+<body>
+    <header>
+        <h1>CRUD</h1>
+    </header>
+    <div class="container">
+        <div class="content">
+            <h2>CRUD</h2>
+            <p>Email: info@example.com</p>
+            <p>Phone: 123-456-7890</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Phone</th>
+                        <th>Email</th>
+                        <th>Message</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{range .Cruds}}
+                    <tr>
+                        <td>{{.ID}}</td>
+                        <td>{{.Name}}</td>
+                        <td>{{.Phone}}</td>
+                        <td>{{.Email}}</td>
+                        <td>{{.Message}}</td>
+                        <td>
+                            <!-- Edit button to trigger the update form -->
+                            <button onclick="editRecord('{{ .ID }}')">Edit</button>
+                             <!-- Delete button to trigger record deletion -->
+                            <button onclick="deleteRecord('{{ .ID }}')">Delete</button>
+                        </td>
+                    </tr>
+                    {{end}}
+                </tbody>
+            </table>
+
+            {{if .Success}}
+            <p>Message: {{.Message}}</p>
+            {{else}}
+            <form method="POST" action="/">
+                <label for="name">Name</label>
+                <input type="text" name="name"><br>
+                <label for="phone">Phone</label>
+                <input type="text" name="phone"><br>
+                <label for="email">Email</label>
+                <input type="text" name="email"><br>
+                <label for="message">Message</label>
+                <textarea name="message"></textarea><br>
+                <input type="submit" name="submit" value="Insert">
+                <input type="submit" name="submit" value="Read">
+                <input type="submit" name="submit" value="Update">
+                <input type="submit" name="submit" value="Delete">
+            </form>
+            {{end}}
+        </div>
+
+        <!-- Hidden form for updating records -->
+        <form id="updateForm" action="/records/update" method="POST" style="display: none;">
+            <input type="text" name="name" id="name" placeholder="Name" required><br>
+            <input type="text" name="phone" id="phone" placeholder="Phone" required><br>
+            <input type="text" name="email" id="email" placeholder="Email" required><br>
+            <input type="text" name="message" id="message" placeholder="Message" required><br>
+            <input type="text" name="id" id="id" value=""><!-- Hidden input to hold record ID -->
+            <button type="submit">Update</button>
+        </form>
+    </div>
+</body>
+{{template "footer"}}
